@@ -1,30 +1,41 @@
 <?php
+
 namespace App\Http\Controllers\API;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Http\Resources\User as UserResource;
+
 class UserController extends Controller
 {
-    public $successStatus = 200;
-    public $errorStatus = 401;
+
 
     /**
      * login api
      *
      * @return \Illuminate\Http\Response
      */
-    public function login(){
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+    public function login()
+    {
+
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')-> accessToken;
-            return response()->json(['success' => $success], $this-> successStatus);
-        }
-        else{
-            return response()->json(['error'=>'Unauthorised'], $this-> errorStatus);
+            return response()
+                ->json([
+                    'user' => new UserResource($user),
+                    'token' => $user->createToken('V1.0')->accessToken
+                ]);
+        } else {
+            return response()
+                ->json(['message' => 'Unauthenticated.'])
+                ->setStatusCode(401);
         }
     }
+
+
     /**
      * Register api
      *
@@ -32,6 +43,7 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
+        // make validator
         $validator = Validator::make($request->all(), [
             'fname' => 'required|alpha|max:255',
             'lname' => 'required|alpha|max:255',
@@ -40,16 +52,27 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'c_password' => 'required|same:password',
         ]);
+
+        // validate request
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], $this-> errorStatus);
+            return response()
+                ->json(['error' => $validator->errors()])
+                ->setStatusCode(400);
         }
-        $input = $request->all();
+
+        // create user
+        $input = $request->all(['fname', 'lname', 'email', 'phone', 'password']);
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')-> accessToken;
-        $success['user'] =  $user;
-        return response()->json(['success'=>$success], $this-> successStatus);
+
+
+        return response()
+            ->json([
+                'user' => new UserResource($user),
+                'token' => $user->createToken('V1.0')->accessToken
+            ]);
     }
+
     /**
      * details api
      *
@@ -58,6 +81,9 @@ class UserController extends Controller
     public function details()
     {
         $user = Auth::user();
-        return response()->json(['success' => $user], $this-> successStatus);
+        return response()
+            ->json([
+                'user' => new UserResource($user),
+            ]);
     }
 }

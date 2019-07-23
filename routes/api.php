@@ -14,14 +14,22 @@ use Illuminate\Http\Request;
 */
 
 
-// user routes
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@register');
+Route::get('details', 'Api\UserController@details')->middleware('auth:api');
+
+
+// Listing Guest
+Route::get('listings', 'Api\ListingController@index');
+Route::get('listings/{listing}', 'Api\ListingController@show');
+
+// Listing Auth
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('details', 'Api\UserController@details');
+
+    // adding new Listing
+    Route::post('listings', 'Api\ListingController@store');
+
 });
+
 
 
