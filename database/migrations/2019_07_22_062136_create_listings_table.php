@@ -17,9 +17,9 @@ class CreateListingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->json('location')->nullable();
-            $table->json('item')->nullable();
-            $table->json('days')->nullable();
+            $table->json('location');
+            $table->json('item');
+            $table->json('days');
             $table->float('price', 8,2);
             $table->boolean('active')->default(false);
             $table->timestamps();

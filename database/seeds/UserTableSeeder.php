@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder
             ->create()
             ->each(function ($user) {
                 foreach (range(1,rand(2,5)) as $i){
-                    $user->addListing(factory(App\Listing::class)->make());
+                    $user->listings()->save(factory(App\Listing::class)->make());
                 }
 
             });
