@@ -21,7 +21,7 @@ class CreateListingsTable extends Migration
             $table->json('item');
             $table->json('days');
             $table->float('price', 8,2);
-            $table->boolean('active')->default(false);
+            $table->boolean('active');
             $table->timestamps();
         });
     }
