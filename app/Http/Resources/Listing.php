@@ -23,6 +23,7 @@ class Listing extends JsonResource
             'item' => json_decode($this->item),
             'days' => json_decode($this->days),
             'price' => $this->price,
+            'active' => $this->active
 
         ];
     }
