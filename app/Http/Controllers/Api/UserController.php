@@ -43,6 +43,7 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
+//        dd($request);
         // make validator
         $validator = Validator::make($request->all(), [
             'fname' => 'required|alpha|max:255',
