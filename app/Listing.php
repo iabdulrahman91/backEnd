@@ -19,4 +19,7 @@ class Listing extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function rentRequests(){
+        return $this->hasMany(RentRequest::class, 'listing_id');
+    }
 }
