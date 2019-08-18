@@ -33,7 +33,7 @@ class ListingController extends Controller
     public function index()
     {
         //
-        $listings = Listing::where('active',true)->paginate(30);
+        $listings = Listing::where('active',true)->paginate(10);
         return ListingResource::collection($listings);
     }
 
