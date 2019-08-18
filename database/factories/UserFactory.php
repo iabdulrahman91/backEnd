@@ -13,6 +13,6 @@ $factory->define(User::class, function (Faker $faker) {
         'lname' => $faker->lastName,
         'email' => $faker->email,
         'phone' => $faker->numerify("05########"),
-        'password' => bcrypt('aassdd'),
+        'password' => bcrypt('secret'),
     ];
 });
