@@ -3,6 +3,7 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use App\Listing;
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 $factory->define(Listing::class, function (Faker $faker) {
@@ -17,14 +18,17 @@ $factory->define(Listing::class, function (Faker $faker) {
         'lng' => $faker->longitude,
     ];
 
+    $date = Carbon::today();
+
     $days = [
-        "01-02-2019" => true,
-        "02-02-2019" => true,
-        "03-02-2019" => true,
-        "04-02-2019" => true,
-        "05-02-2019" => true,
-        "06-02-2019" => true,
-        "07-02-2019" => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+        $date->addDays(1)->format("d-m-Y") => true,
+
     ];
 
     return [
