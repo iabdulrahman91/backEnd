@@ -36,5 +36,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 });
 
-
+// RentRequest
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('rentRequests', 'API\RentRequestController@index');
+    Route::get('rentRequests/{id}', 'API\RentRequestController@show');
+    Route::post('rentRequests', 'API\RentRequestController@store');
+    Route::delete('rentRequests/{id}', 'API\RentRequestController@destroy');
+});
 
