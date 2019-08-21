@@ -27,7 +27,7 @@ class CreateRentRequestsTable extends Migration
             $table->json('days');
 
             $table->float('cost', 8, 2);
-            $table->integer('status')->default(1);
+            $table->integer('status');
             $table->timestamps();
 
 
