@@ -41,6 +41,16 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('rentRequests', 'API\RentRequestController@index');
     Route::get('rentRequests/{id}', 'API\RentRequestController@show');
     Route::post('rentRequests', 'API\RentRequestController@store');
+    Route::put('rentRequests/{id}', 'API\RentRequestController@update');
     Route::delete('rentRequests/{id}', 'API\RentRequestController@destroy');
 });
 
+
+// Booking
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('bookings', 'Api\BookingController@index');
+    Route::get('bookings/{id}', 'Api\BookingController@show');
+    Route::post('bookings', 'Api\BookingController@store');
+    Route::put('bookings/{id}', 'Api\BookingController@update');
+    Route::delete('bookings/{id}', 'Api\BookingController@destroy');
+});
