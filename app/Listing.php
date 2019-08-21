@@ -22,4 +22,8 @@ class Listing extends Model
     public function rentRequests(){
         return $this->hasMany(RentRequest::class, 'listing_id');
     }
+
+    public function bookings(){
+        return $this->hasMany(Booking::class, 'listing_id');
+    }
 }

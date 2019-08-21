@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class RentRequest extends Model
 {
     //
-    public $incrementing = true;
     protected $attributes = [
-        'status' => 1
+        'status' => 0
     ];
 
     protected $fillable = [

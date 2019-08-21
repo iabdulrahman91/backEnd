@@ -3,6 +3,7 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use App\Listing;
+use App\User;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
@@ -32,6 +33,7 @@ $factory->define(Listing::class, function (Faker $faker) {
     ];
 
     return [
+        'user_id' => factory(User::class)->create()->id,
         'item' => json_encode($item),
         'location' => json_encode($location),
         'days' => json_encode($days),

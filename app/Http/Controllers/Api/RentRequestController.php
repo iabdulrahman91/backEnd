@@ -33,6 +33,27 @@ class RentRequestController extends Controller
             ]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\RentRequest $rentRequest
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+        // only owner or customer can view it
+        $user = Auth::user();
+
+        $rr = RentRequest::find($id);
+
+        if ($user->id != $rr->customer_id && $user->id != $rr->listing->user_id) {
+            return response(['error' => 'Unauthorized.'], 401);
+        }
+
+        return new RentRequestResource($rr);
+
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -62,7 +83,7 @@ class RentRequestController extends Controller
         // to prevent duplicate rent requests
         $rr = RentRequest::where('customer_id', $user->id)
             ->where('listing_id', $request['listing_id'])
-            ->where('status', 1)
+            ->whereIn('status', [0,1])
             ->first();
 
         if ($rr != null) {
@@ -71,13 +92,18 @@ class RentRequestController extends Controller
         }
 
         // get the requested listing
+        // if doesn't exist return bad request error
         $listing = Listing::find($request['listing_id']);
         if ($listing == null) {
             return response(['error' => 'listing does not exist.'], 400);
         }
 
-        // prepare rentRequest data
 
+        if ($listing->user->id == $user->id){
+            return response(['error' => 'you can not send rent request to yourself.'], 400);
+        }
+
+        // prepare rentRequest data
 
         // format the dates to day-month-year : 24-12-1991
         $days = array();
@@ -85,6 +111,7 @@ class RentRequestController extends Controller
             array_push($days, Carbon::parse($d)->format('d-m-Y'));
         }
 
+        // ensure requested days are available
         $listingDays = json_decode($listing->days);
         $invalidDays = array();
         foreach ( $days as $d){
@@ -115,27 +142,66 @@ class RentRequestController extends Controller
         return new RentRequestResource($rentRequest);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\RentRequest $rentRequest
-     * @return \Illuminate\Http\Response
-     */
-    public function show(int $id)
-    {
-        // only owner or customer can view it
+
+    public function update(Request $request, int $id){
+        $rr = RentRequest::find($id);
         $user = Auth::user();
 
-        $rr = RentRequest::find($id);
+        // if the rent request is not still open return erro
+        if ($rr == null || $rr->status != 0){
+            return response(['error' => 'Not Found.'], 404);
+        }
 
-        if ($user->id != $rr->customer_id && $user->id != $rr->listing->user_id) {
+        // only customer can update their rent requests
+        if ($user->id != $rr->customer_id){
             return response(['error' => 'Unauthorized.'], 401);
         }
 
+        // validate days
+        $validator = Validator::make($request->all(), [
+            'days' => ['Required', new Days()],
+        ]);
+
+        if ($validator->fails()) {
+            return response()
+                ->json(['error' => $validator->errors()])
+                ->setStatusCode(400);
+        }
+
+        // in case the listing is deleted
+        $listing = Listing::find($rr->listing_id);
+        if ($listing == null) {
+            return response(['error' => 'listing does not exist anymore.'], 400);
+        }
+
+        // make sure days are available
+        $days = array();
+        foreach ($request['days'] as $d) {
+            array_push($days, Carbon::parse($d)->format('d-m-Y'));
+        }
+
+        // ensure requested days are available
+        $listingDays = json_decode($listing->days);
+        $invalidDays = array();
+        foreach ( $days as $d){
+            if (!isset($listingDays->{$d}) || $listingDays->{$d} != 1){
+                array_push($invalidDays, $d);
+            }
+        }
+
+        if (count($invalidDays)){
+            return response()
+                ->json(['error' => 'unavailable days'], 400, []);
+        }
+
+        // update RentRequest
+        $rr->days = json_encode($days);
+        $rr->save();
+
+
+        // return updated
         return new RentRequestResource($rr);
-
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -151,9 +217,12 @@ class RentRequestController extends Controller
 
         $rr = RentRequest::find($id);
 
+        // customer cancel
         if ($user->id == $rr->customer_id)  {
-            $rr->status = 0;
+            $rr->status = 3;
             $rr->save();
+
+        // owner reject
         } elseif ($user->id == $rr->listing->user_id) {
             $rr->status = 2;
             $rr->save();

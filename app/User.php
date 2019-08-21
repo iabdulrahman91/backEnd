@@ -56,4 +56,14 @@ class User extends Authenticatable
         return $this->hasManyThrough(RentRequest::class, Listing::class);
     }
 
+    // sent Bookings
+    public function sentBookings(){
+        return $this->hasMany(Booking::class, 'customer_id');
+    }
+
+    // received Bookings
+    public function receivedBookings() {
+        return $this->hasManyThrough(Booking::class, Listing::class);
+    }
+
 }
