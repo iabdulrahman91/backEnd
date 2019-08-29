@@ -38,9 +38,25 @@ class BookingController extends Controller
      * @param  \App\Booking  $booking
      * @return \Illuminate\Http\Response
      */
-    public function show(Booking $booking)
+    public function show(int $id)
     {
-        //
+        // find booking by id
+        $booking = Booking::find($id);
+        if ($booking == null) {
+            return response()
+                ->json(['error' => 'Not Found.'])
+                ->setStatusCode(404);
+        }
+
+        // validate user
+        $user = Auth::user();
+        if($user->id != $booking->customer_id && $user->id != $booking->listing->user_id){
+            return response()
+                ->json(['error' => 'Unauthorized.'])
+                ->setStatusCode(401);
+        }
+
+        return new BookingResource($booking);
     }
 
 
@@ -82,12 +98,23 @@ class BookingController extends Controller
 
 
         // update rentRequest status 1 for approval 2 for rejection
+
         foreach ($rr->listing->rentRequests as $r){
             $r->status = 2;
             $r->save();
         }
         $rr->status = 1;
         $rr->save();
+
+        // update the days of the listing to be unavailable
+        $requestedDays = json_decode($rr->days);
+        $listing = $rr->listing()->first();
+        $listingDays = json_decode($listing->days);
+        foreach ($requestedDays as $d){
+            $listingDays->{$d} = false;
+        }
+        $listing->days = json_encode($listingDays);
+        $listing->save();
 
         // make new Booking
         $booking = new Booking([
