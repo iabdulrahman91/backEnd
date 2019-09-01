@@ -16,5 +16,6 @@ class DestroyBookingTest extends TestCase
     public function testExample()
     {
         // TODO
+        $this->assertTrue(true);
     }
 }
