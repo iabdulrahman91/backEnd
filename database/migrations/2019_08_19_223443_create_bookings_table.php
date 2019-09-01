@@ -23,7 +23,7 @@ class CreateBookingsTable extends Migration
             $table->foreign('customer_id')->references('id')->on('users');
 
 
-            $table->text('days');
+            $table->json('days');
 
             $table->float('cost', 8, 2);
             $table->integer('status');
