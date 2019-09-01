@@ -20,9 +20,10 @@ Route::get('details', 'Api\UserController@details')->middleware('auth:api');
 
 
 // Listing Guest
-Route::get('listings', 'Api\ListingController@index');
-Route::get('listings/{listing}', 'Api\ListingController@show');
-
+Route::group(['middleware' => ['cors']], function () {
+    Route::get('listings', 'Api\ListingController@index');
+    Route::get('listings/{listing}', 'Api\ListingController@show');
+});
 // Listing Auth
 Route::group(['middleware' => 'auth:api'], function () {
 
