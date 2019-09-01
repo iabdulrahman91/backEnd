@@ -24,7 +24,7 @@ class CreateRentRequestsTable extends Migration
             $table->foreign('customer_id')->references('id')->on('users');
 
 
-            $table->json('days');
+            $table->text('days');
 
             $table->float('cost', 8, 2);
             $table->integer('status');
