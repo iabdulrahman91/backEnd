@@ -13,17 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-
+//Route::group(['middleware' => ['cors']], function () {
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@register');
 Route::get('details', 'Api\UserController@details')->middleware('auth:api');
 
-
 // Listing Guest
-Route::group(['middleware' => ['cors']], function () {
-    Route::get('listings', 'Api\ListingController@index');
-    Route::get('listings/{listing}', 'Api\ListingController@show');
-});
+Route::get('listings', 'Api\ListingController@index');
+Route::get('listings/{listing}', 'Api\ListingController@show');
+
 // Listing Auth
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -55,3 +53,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('bookings/{id}', 'Api\BookingController@update');
     Route::delete('bookings/{id}', 'Api\BookingController@destroy');
 });
+
+
+//});

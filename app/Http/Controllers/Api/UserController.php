@@ -28,9 +28,14 @@ class UserController extends Controller
                     'user' => new UserResource($user),
                     'token' => $user->createToken('V1.0')->accessToken
                 ]);
-        } else {
+        } elseif (request('email') == null || request('password') == null) {
             return response()
-                ->json(['message' => 'Unauthenticated.'])
+                ->json(['message' => 'Bad Request'])
+                ->setStatusCode(400);
+        }
+        else {
+            return response()
+                ->json(['message' => 'Unauthenticated'])
                 ->setStatusCode(401);
         }
     }
@@ -43,7 +48,6 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
-//        dd($request);
         // make validator
         $validator = Validator::make($request->all(), [
             'fname' => 'required|alpha|max:255',

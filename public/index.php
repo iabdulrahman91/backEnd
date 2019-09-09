@@ -55,6 +55,9 @@ $response = $kernel->handle(
     $request = Illuminate\Http\Request::capture()
 );
 
+//this conditional statement is to verify the aws-rds connection.
+
+
 $response->send();
 
 $kernel->terminate($request, $response);
