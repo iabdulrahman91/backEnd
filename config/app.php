@@ -165,7 +165,8 @@ return [
         /*
          * Package Service Providers...
          */
-
+        //this is added for CORS issue
+        Barryvdh\Cors\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
