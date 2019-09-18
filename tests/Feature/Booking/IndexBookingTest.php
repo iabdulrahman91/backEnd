@@ -15,7 +15,7 @@ class IndexBookingTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->artisan('db:seed --class RentRequestSeeder');
+        $this->artisan('db:seed --class RentRequestTableSeeder');
 
 
 

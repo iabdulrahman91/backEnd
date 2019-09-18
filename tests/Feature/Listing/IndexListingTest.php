@@ -17,7 +17,7 @@ class IndexListingTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->artisan('db:seed --class ListingSeeder');
+        $this->artisan('db:seed --class ListingTableSeeder');
     }
 
     public function test_index_listing(){

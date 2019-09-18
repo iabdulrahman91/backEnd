@@ -17,7 +17,7 @@ class DestroyListingTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->artisan('db:seed --class ListingSeeder');
+        $this->artisan('db:seed --class ListingTableSeeder');
     }
 
    public function test_user_can_delete_listing(){
