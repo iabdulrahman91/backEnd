@@ -13,6 +13,7 @@ class ListingTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('listings')->delete();
         factory(Listing::class, 50)->create();
     }
 }

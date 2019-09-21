@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 //Location services
 Route::get('cities', 'Api\CityController@index');
+Route::get('cities/{id}', 'Api\CityController@show');
 
 //Route::group(['middleware' => ['cors']], function () {
 Route::post('login', 'Api\UserController@login');

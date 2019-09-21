@@ -13,6 +13,7 @@ class RentRequestTableSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('rent_requests')->delete();
         factory(RentRequest::class, 50)->create();
     }
 }

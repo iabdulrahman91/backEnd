@@ -17,7 +17,8 @@ class CreateListingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->json('location');
+            $table->unsignedBigInteger('location');
+            $table->boolean('deliverable');
             $table->json('item');
             $table->json('days');
             $table->float('price', 8,2);
@@ -33,6 +34,8 @@ class CreateListingsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('rent_requests');
         Schema::dropIfExists('listings');
     }
 }

@@ -14,10 +14,8 @@ $factory->define(Listing::class, function (Faker $faker) {
         'product' => $faker->text(6),
     ];
 
-    $location = [
-        'lat' => $faker->latitude,
-        'lng' => $faker->longitude,
-    ];
+    // hard coded number of cities in Saudi Arabia
+    $location = $faker->numberBetween(1, 3946);
 
     $date = Carbon::today();
 
@@ -36,6 +34,7 @@ $factory->define(Listing::class, function (Faker $faker) {
         'user_id' => factory(User::class)->create()->id,
         'item' => json_encode($item),
         'location' => json_encode($location),
+        'deliverable' => $faker->boolean(),
         'days' => json_encode($days),
         'price' => $faker->randomFloat(2,1,1000),
     ];

@@ -12,7 +12,7 @@ class Listing extends Model
     ];
 
     protected $fillable = [
-        'item','location','price', 'days',
+        'item','location', 'deliverable', 'price', 'days',
     ];
 
     public function user(){
@@ -25,5 +25,9 @@ class Listing extends Model
 
     public function bookings(){
         return $this->hasMany(Booking::class, 'listing_id');
+    }
+
+    public function city(){
+        return $this->hasOne(City::class, 'id', 'location');
     }
 }

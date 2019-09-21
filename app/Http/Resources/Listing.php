@@ -19,7 +19,7 @@ class Listing extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'location' => json_decode($this->location),
+            'location' => ($this->city),
             'item' => json_decode($this->item),
             'days' => json_decode($this->days),
             'price' => $this->price,
