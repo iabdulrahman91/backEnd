@@ -38,7 +38,7 @@ class ShowRentRequestTest extends TestCase
         // and valid new rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // when customer try to see the made request
@@ -74,7 +74,7 @@ class ShowRentRequestTest extends TestCase
         // and valid new rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // when owner try to see the made request
@@ -111,7 +111,7 @@ class ShowRentRequestTest extends TestCase
         // and valid new rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // when owner try to see the made request

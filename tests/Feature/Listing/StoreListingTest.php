@@ -26,17 +26,13 @@ class StoreListingTest extends TestCase
         $user = factory(User::class)->create();
         Passport::actingAs($user);
 
-        $days = [
-            Carbon::today()->addDays(1)->format('d-m-Y'),
-            Carbon::today()->addDays(2)->format('d-m-Y')
-        ];
         // when user make post request to add new listing
         $res = $this->json('POST', 'api/listings',
             [
-                'item' => [
+                'item' => json_encode([
                     'company' => 'cannon',
                     'category' => 'body',
-                    'product' => 'D3000'],
+                    'product' => 'D3000']),
 
                 'location' => $this->faker->numberBetween(1,100),
 
@@ -44,7 +40,10 @@ class StoreListingTest extends TestCase
 
 
 
-                'days' => json_encode($days),
+                'days' => json_encode([
+                    Carbon::today()->addDays(1)->format('d-m-Y'),
+                    Carbon::today()->addDays(2)->format('d-m-Y')
+                ]),
                 'deliverable' => $this->faker->boolean(),
             ],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);

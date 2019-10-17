@@ -45,14 +45,14 @@ class UpdateRentRequestTest extends TestCase
         // When customer update the sent rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$day1, $day2]
+            'days' => json_encode([$day1, $day2]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $rr = $res->json()['data'];
 
 
         $res = $this->json('PUT', 'api/rentRequests/'.$rr['id'], [
-            'days' => [$day3, $day4]
+            'days' => json_encode([$day3, $day4]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $res->assertOk();
@@ -87,7 +87,7 @@ class UpdateRentRequestTest extends TestCase
 
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$day1, $day2]
+            'days' => json_encode([$day1, $day2]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $rr = $res->json()['data'];
@@ -124,14 +124,14 @@ class UpdateRentRequestTest extends TestCase
 
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$day1, $day2]
+            'days' => json_encode([$day1, $day2]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $rr = $res->json()['data'];
 
         // When other customer update the sent rentRequest
         $res = $this->json('PUT', 'api/rentRequests/33'.$rr['id'], [
-            'days' => [$day3, $day4]
+            'days' => json_encode([$day3, $day4]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then user should get unauthorized error msg

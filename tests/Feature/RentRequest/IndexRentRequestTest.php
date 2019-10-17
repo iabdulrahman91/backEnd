@@ -56,7 +56,7 @@ class IndexRentRequestTest extends TestCase
         // When customer make send rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then customer can see it using the api
@@ -85,7 +85,7 @@ class IndexRentRequestTest extends TestCase
         // When make send rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
 

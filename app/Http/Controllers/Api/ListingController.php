@@ -7,6 +7,7 @@ use App\Rules\Days;
 use App\Rules\Item;
 use App\Rules\Location;
 use Carbon\Carbon;
+use function MongoDB\BSON\toJSON;
 use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -75,10 +76,11 @@ class ListingController extends Controller
         // see Rules/ for more info about the validation process
         $validator = Validator::make($request->all(), [
             'location' => ['Required', 'Numeric'],
-            'item' => ['Required'],
-            'days' => ['Required', 'Str'],
+            'item' => ['Required', 'JSON',],
+            'days' => ['Required', 'JSON'],
             'price' => ['Required', 'Numeric'],
         ]);
+
 
         // return bad request code with error msg
         if ($validator->fails()) {
@@ -86,6 +88,7 @@ class ListingController extends Controller
                 ->json(['error' => $validator->errors()])
                 ->setStatusCode(400);
         }
+
 
 
 
@@ -102,14 +105,13 @@ class ListingController extends Controller
         foreach ($dates as $d) {
             $days[Carbon::parse($d)->format('d-m-Y')] = 1;
         }
-//        $days = json_encode($days);
 
         // instantiate listing object
         $listing = new Listing([
             'location' => $location,
-            'item' => $item,
+            'item' => ($item),
             'price' => $price,
-            'days' => $days,
+            'days' => json_encode($days),
             'deliverable' => $deliverable,
 
         ]);
@@ -171,6 +173,7 @@ class ListingController extends Controller
          */
         $oldDays = json_decode($listing->days);
         $newDays = array();
+        $dates = json_decode($request['days']);
 
 
         // deactivate all active days. Leave other dates if not active (1)
@@ -186,7 +189,7 @@ class ListingController extends Controller
         // format the dates to day-month-year : 24-12-1991
         // and add new days
         // just add new dates or update the one deleted by user (3)
-        foreach ($request['days'] as $d) {
+        foreach ($dates as $d) {
             $day = Carbon::parse($d)->format('d-m-Y');
 
             try {

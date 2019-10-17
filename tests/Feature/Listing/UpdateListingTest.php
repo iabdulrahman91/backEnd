@@ -33,10 +33,10 @@ class UpdateListingTest extends TestCase
         $res = $this->json('PUT', 'api/listings/'.$listing->id,
             [
 
-                'days' => [
+                'days' => json_encode([
                     $day1 = Carbon::today()->addDays(10)->format('d-m-Y'),
                     $day2 = Carbon::today()->addDays(11)->format('d-m-Y')
-                ]
+                ])
             ],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 

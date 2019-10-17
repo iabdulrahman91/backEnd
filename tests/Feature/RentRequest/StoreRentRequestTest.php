@@ -41,7 +41,7 @@ class StoreRentRequestTest extends TestCase
         // When make send rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then see it in the database
@@ -67,7 +67,7 @@ class StoreRentRequestTest extends TestCase
         // When make send rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then see it in the database
@@ -95,12 +95,12 @@ class StoreRentRequestTest extends TestCase
         // When duplicate send rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then they should get bad request Error
@@ -127,7 +127,7 @@ class StoreRentRequestTest extends TestCase
 
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(9)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(9)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         // Then they should get bad request Error
@@ -151,7 +151,7 @@ class StoreRentRequestTest extends TestCase
         // When user send rentRequest to themselve
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
 

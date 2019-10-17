@@ -36,7 +36,7 @@ class DestroyRentRequestTest extends TestCase
         // When customer delete rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $rr = json_decode($res->getContent())->data;
@@ -68,7 +68,7 @@ class DestroyRentRequestTest extends TestCase
         // When owner cancel rentRequest
         $res = $this->json('POST', 'api/rentRequests', [
             'listing_id' => $listing->id,
-            'days' => [$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]
+            'days' => json_encode([$today->addDays(1)->format('d-m-Y'), $today->addDays(1)->format('d-m-Y')]),
         ], ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
         $rr = json_decode($res->getContent())->data;

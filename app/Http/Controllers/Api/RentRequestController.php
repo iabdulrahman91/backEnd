@@ -107,7 +107,8 @@ class RentRequestController extends Controller
 
         // format the dates to day-month-year : 24-12-1991
         $days = array();
-        foreach ($request['days'] as $d) {
+        $dates = json_decode($request['days']);
+        foreach ($dates as $d) {
             array_push($days, Carbon::parse($d)->format('d-m-Y'));
         }
 
@@ -176,7 +177,8 @@ class RentRequestController extends Controller
 
         // make sure days are available
         $days = array();
-        foreach ($request['days'] as $d) {
+        $dates = json_decode($request['days']);
+        foreach ($dates as $d) {
             array_push($days, Carbon::parse($d)->format('d-m-Y'));
         }
 
