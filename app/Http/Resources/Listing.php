@@ -20,10 +20,12 @@ class Listing extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'location' => ($this->city),
+            'deliverable' => $this->deliverable,
             'item' => json_decode($this->item),
             'days' => json_decode($this->days),
             'price' => $this->price,
             'active' => $this->active
+
 
         ];
     }

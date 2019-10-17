@@ -74,9 +74,9 @@ class ListingController extends Controller
 
         // see Rules/ for more info about the validation process
         $validator = Validator::make($request->all(), [
-            'location' => ['Required', new Location()],
-            'item' => ['Required', new Item()],
-            'days' => ['Required', new Days()],
+            'location' => ['Required', 'Numeric'],
+            'item' => ['Required'],
+            'days' => ['Required', 'Str'],
             'price' => ['Required', 'Numeric'],
         ]);
 
@@ -88,18 +88,21 @@ class ListingController extends Controller
         }
 
 
+
         // prepare listing data
-        $location = json_encode($request['location']);
-        $item = json_encode($request['item']);
+        $location = ($request['location']);
+        $item = ($request['item']); // todo: need validation
         $price = ($request['price']);
+        $dates = json_decode($request['days']);
+        $deliverable = boolval($request['deliverable']);
 
 
         // format the dates to day-month-year : 24-12-1991
         $days = array();
-        foreach ($request['days'] as $d) {
+        foreach ($dates as $d) {
             $days[Carbon::parse($d)->format('d-m-Y')] = 1;
         }
-        $days = json_encode($days);
+//        $days = json_encode($days);
 
         // instantiate listing object
         $listing = new Listing([
@@ -107,6 +110,7 @@ class ListingController extends Controller
             'item' => $item,
             'price' => $price,
             'days' => $days,
+            'deliverable' => $deliverable,
 
         ]);
 

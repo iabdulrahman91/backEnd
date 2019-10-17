@@ -33,7 +33,7 @@ class Item implements Rule
         try{
             $company = $value["company"];
             $category = $value["category"];
-            $product = $value["product"];
+            $product = $value["model"];
 
             // validate field input
             if (empty($company) || !is_string($company)){

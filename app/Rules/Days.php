@@ -35,6 +35,7 @@ class Days implements Rule
     public function passes($attribute, $value)
     {
         // validate number of dates : min is 2 to form a sequence
+        $value = json_decode($value);
         if (count($value) < 2) {
             array_push($this->msg, "require two dates minimum");
             return false;

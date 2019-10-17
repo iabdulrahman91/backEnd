@@ -21,10 +21,15 @@ class StoreListingTest extends TestCase
     }
 
     public function test_user_can_add_new_listing(){
+        $this->withoutExceptionHandling();
         // given authorized user
         $user = factory(User::class)->create();
         Passport::actingAs($user);
 
+        $days = [
+            Carbon::today()->addDays(1)->format('d-m-Y'),
+            Carbon::today()->addDays(2)->format('d-m-Y')
+        ];
         // when user make post request to add new listing
         $res = $this->json('POST', 'api/listings',
             [
@@ -33,17 +38,14 @@ class StoreListingTest extends TestCase
                     'category' => 'body',
                     'product' => 'D3000'],
 
-                'location' => [
-                    'lat' => $this->faker->latitude,
-                    'lng' => $this->faker->longitude,
-                ],
+                'location' => $this->faker->numberBetween(1,100),
 
                 'price' => $this->faker->randomFloat(2,1,1000),
 
-                'days' => [
-                    Carbon::today()->addDays(1)->format('d-m-Y'),
-                    Carbon::today()->addDays(2)->format('d-m-Y')
-                ]
+
+
+                'days' => json_encode($days),
+                'deliverable' => $this->faker->boolean(),
             ],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
