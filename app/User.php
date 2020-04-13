@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'fname', 'lname', 'email', 'phone', 'password',
     ];
 
     /**
@@ -38,4 +38,32 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // listings
+    public function listings(){
+        return $this->hasMany(Listing::class);
+    }
+
+
+    // sent Rent Requests
+    public function sentRentRequests(){
+        return $this->hasMany(RentRequest::class, 'customer_id');
+    }
+
+    // received Rent Requests
+    public function receivedRentRequests() {
+        return $this->hasManyThrough(RentRequest::class, Listing::class);
+    }
+
+    // sent Bookings
+    public function sentBookings(){
+        return $this->hasMany(Booking::class, 'customer_id');
+    }
+
+    // received Bookings
+    public function receivedBookings() {
+        return $this->hasManyThrough(Booking::class, Listing::class);
+    }
+
 }
